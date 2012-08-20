@@ -1,5 +1,6 @@
 package org.BetterGenTeam.BetterGen.BukkitPlugin;
 
+import org.BetterGenTeam.BetterGen.ChunkGenerators.BetterGenChunkGenerator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,7 +26,7 @@ public class BetterGenPlugin extends JavaPlugin{
 	 */
 	public ChunkGenerator getDefaultWorldGenerator(String worldName, String GenId) {
 		//TODO
-		return null;
+		return new BetterGenChunkGenerator(); //just to test
 	}
 	
 }

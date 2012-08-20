@@ -4,12 +4,11 @@ package org.BetterGenTeam.BetterGen.NoiseGenerators;
  * 
  * @author jtjj222
  * use this to maintain compatibility with bukkit's noise generators
+ * this interface has only the bare-minimum.
  *
  */
-//TODO
-abstract public interface NosieGenerator {
+public interface NosieGenerator {
 
-	public double getNoise(int x, double frequency, double amplitude);
 	public double getNoise(int x, int z, double frequency, double amplitude);
 	public double getNoise(int x, int y, int z, double frequency, double amplitude);
 
