@@ -1,0 +1,32 @@
+===Description
+The better generator is a minecraft world generator that aims to be better then the default one. It will generate more exiting worlds with its' own unique features. \\
+Less terrain bugs and more minecraft feeling!
+
+===The better generator team:
+* codename_b
+* sd5
+* NSArray
+* jtjj222
+
+You want to take part? Apply at: \\
+[[http://forums.bukkit.org/threads/recruitment-for-bettergen-a-world-generator-that-bests-the-default.94471/|Recruitment for bettergen]]
+
+===Features:
+* More extreme mountains (with trees!)
+* Flatter plains for building
+* Prettier swamps
+* Deeper oceans
+* Mineshafts with tunnels to the surface
+* and more!
+
+----
+
+===What's in the folders?
+**BiomeGenerator** - Everything pertaining to biomes
+**BlockPopulators** - Well, block populators. Only use bukkit's block populator type when doing something that spans a single chunk.
+**BukkitPlugin** - all of the bukkit-dependent files
+**ChunkGenerators** - ChunkGenerators
+**Exceptions** - java exceptions
+**NoiseGenerators** - All of the noise generators we will use. We don't use bukkit's noise generators because they are bukkit dependent, and that will be a pain if we end up porting it to single player.
+
+===Wiki creole: [[http://wikicreole.org/attach/CheatSheet/creole_cheat_sheet.png|'Cheat sheet']]
