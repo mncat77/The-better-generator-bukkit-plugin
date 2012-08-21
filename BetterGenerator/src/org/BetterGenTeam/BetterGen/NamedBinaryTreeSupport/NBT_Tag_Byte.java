@@ -1,4 +1,4 @@
-package org.BetterGenTeam.BetterGen.SchematicsLoader;
+package org.BetterGenTeam.BetterGen.NamedBinaryTreeSupport;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -13,13 +13,9 @@ import org.BetterGenTeam.BetterGen.Exceptions.NoDataException;
  *
  */
 public class NBT_Tag_Byte extends NBT_Tag{
-
-	public NBT_Tag_Byte() {
-		super(1);
-	}
 	
-	public NBT_Tag_Byte(byte payload) {
-		super(1);
+	public NBT_Tag_Byte(byte payload, String name) {
+		super(1, name);
 		this.PayLoad = payload;
 	}
 	
@@ -34,13 +30,26 @@ public class NBT_Tag_Byte extends NBT_Tag{
 	}
 
 	public void ReadPayload(DataInputStream s) throws IOException, NoDataException {
+		short name_length = s.readShort();
+		char[] name = new char[(int) name_length];
+		
+		for (int i= 0; i< name_length; i++) {
+			name[i] = s.readChar();
+		}
+		
 		byte payload = s.readByte();
-		if (payload != -1) this.PayLoad = payload;
+		if (payload != -1) {
+			this.PayLoad = payload;
+			this.name_length = name_length;
+			this.name = name;
+		}
 		else throw new NoDataException();
 	}
 	
 	public void WritePayload(DataOutputStream s) throws IOException {
 		s.writeByte(this.ID); //write the id first
+		s.writeShort(this.name_length);
+		s.writeChars(this.name.toString());
 		s.writeByte(this.PayLoad); //then the data
 	}
 }

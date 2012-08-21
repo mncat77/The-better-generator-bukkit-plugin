@@ -1,4 +1,4 @@
-package org.BetterGenTeam.BetterGen.SchematicsLoader;
+package org.BetterGenTeam.BetterGen.NamedBinaryTreeSupport;
 
 /**
  * 
@@ -18,25 +18,25 @@ public class NBT_Tag {
 
 	byte ID;
 	
-	String name;
+	short name_length;
+	char[] name;
 	
-	public NBT_Tag(int i) {
+	public NBT_Tag(int i, String name) {
 		this.ID = (byte) i;
+		this.name = name.toCharArray();
+		this.name_length = (short) name.length();
 	}
 	public byte getID() {
 		return this.ID;
 	}
 	
 	public String getName() {
-		return this.name;
-	}
-	
-	public void setID(byte id) {
-		this.ID = id;
+		return this.name.toString();
 	}
 	
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.toCharArray();
+		this.name_length = (short) name.length();
 	}
 	
 }
