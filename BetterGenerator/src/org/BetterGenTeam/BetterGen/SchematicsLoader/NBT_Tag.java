@@ -16,12 +16,12 @@ package org.BetterGenTeam.BetterGen.SchematicsLoader;
  */
 public class NBT_Tag {
 
-	private byte ID;
+	byte ID;
 	
 	String name;
 	
-	public NBT_Tag(byte id) {
-		this.ID = id;
+	public NBT_Tag(int i) {
+		this.ID = (byte) i;
 	}
 	public byte getID() {
 		return this.ID;

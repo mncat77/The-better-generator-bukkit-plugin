@@ -11,7 +11,7 @@ package org.BetterGenTeam.BetterGen.SchematicsLoader;
 public class NBT_Tag_End extends NBT_Tag{
 	
 	public NBT_Tag_End() {
-		super((byte) 0);
+		super(0);
 	}
 
 }
