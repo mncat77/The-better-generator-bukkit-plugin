@@ -17,6 +17,7 @@ Less terrain bugs and more minecraft feeling!
 * Kodfod
 * NSArray
 * jtjj222
+* escortkeel
 
 You want to take part? Apply at: \\
 [[http://forums.bukkit.org/threads/recruitment-for-bettergen-a-world-generator-that-bests-the-default.94471/|Recruitment for bettergen]]
