@@ -1,5 +1,0 @@
-name: BetterGenerator
-description: A bukkit world generator that aims to best the default one.
-version: 0.1
-main: org.BetterGenTeam.BetterGen.BukkitPlugin.BetterGenPlugin
-load: STARTUP
