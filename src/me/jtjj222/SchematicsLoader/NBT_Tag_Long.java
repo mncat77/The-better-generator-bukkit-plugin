@@ -1,24 +1,25 @@
-package me.jtjj222.Schematics;
+package me.jtjj222.SchematicsLoader;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class NBT_Tag_Short extends NBT_Tag{
+public class NBT_Tag_Long extends NBT_Tag{
 	
-	public short payload;
+	public long payload;
 
-	public NBT_Tag_Short(String name){
-		super(2, name);
+	public NBT_Tag_Long(String name){
+		super(4, name);
 	}
-	public NBT_Tag_Short(String name, short payload){
+	
+	public NBT_Tag_Long(String name, Long payload){
 		super(8, name);
 		this.payload = payload;
 	}
 
 	@Override
 	public void readTagPayload(DataInput in) throws IOException {
-		this.payload = in.readShort();		
+		this.payload = in.readLong();		
 	}
 	
 	public void writeTag(DataOutput out) throws IOException {
@@ -26,9 +27,9 @@ public class NBT_Tag_Short extends NBT_Tag{
 		out.writeUTF(this.name);
 		this.writePayload(out);
 	}
-
-	public void writePayload(DataOutput out) throws IOException {
-		out.writeShort(this.payload);
-	}
 	
+	public void writePayload(DataOutput out) throws IOException {
+		out.writeLong(this.payload);
+	}
+
 }

@@ -1,4 +1,4 @@
-package me.jtjj222.Schematics;
+package me.jtjj222.SchematicsLoader;
 
 import java.io.DataInput;
 import java.io.DataInputStream;

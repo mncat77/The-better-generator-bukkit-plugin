@@ -1,12 +1,11 @@
 package org.BetterGenTeam.BetterGen.ChunkGenerators;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.util.noise.PerlinOctaveGenerator;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 public class BetterGenChunkGenerator extends ChunkGenerator{
@@ -39,66 +38,40 @@ public class BetterGenChunkGenerator extends ChunkGenerator{
 		}
 	}
 	
-	private ArrayList<SimplexOctaveGenerator> getGenerators(Biome biome, long seed) {
-		
-		ArrayList<SimplexOctaveGenerator> gens = new ArrayList<SimplexOctaveGenerator>();
-		
-		gens.add(new SimplexOctaveGenerator(seed, 16));
-		gens.get(0).setScale(1/256.0);
-		
-		gens.add(new SimplexOctaveGenerator(seed, 8));
-		gens.get(1).setScale(1/128.0);
-		
-		gens.add(new SimplexOctaveGenerator(seed, 4));
-		gens.get(2).setScale(1/64.0);
-		
-		gens.add(new SimplexOctaveGenerator(seed, 2));
-		gens.get(3).setScale(1/32.0);
-		
-		gens.add(new SimplexOctaveGenerator(seed, 2));
-		gens.get(4).setScale(1/16.0);
-		
-		return gens;
-	}
-	
-	private int getHeight(ArrayList<SimplexOctaveGenerator> gens, int x, int z) {
-		double sumOf2dNoises = 0;
-		//loop through all of the generators
-		for (SimplexOctaveGenerator gen : gens) {
-			sumOf2dNoises += gen.noise(x, z, 0.5, 0.5);
-		}
-		
-		sumOf2dNoises = sumOf2dNoises * 2 + 64;
-		return (int) sumOf2dNoises;
-	}
-
 	@Override
 	public byte[][] generateBlockSections(World world, Random rand, int ChunkX,
 			int ChunkZ, BiomeGrid biome) {
 		//where we will store our blocks
-		byte[][] chunk = new byte[world.getMaxHeight() / 16][];
+		byte[][] chunk = new byte[world.getMaxHeight() / 16][];		
 		
-		ArrayList<SimplexOctaveGenerator> gens = getGenerators(null,world.getSeed());
+		PerlinOctaveGenerator base = new PerlinOctaveGenerator(world,10);
+		base.setScale(1/128.0);
+		
+		PerlinOctaveGenerator tops = new PerlinOctaveGenerator(world,2);
+		tops.setScale(1/32.0);
 		
 		SimplexOctaveGenerator gen3d = new SimplexOctaveGenerator(world,8);
-		gen3d.setXScale(1/24.0);
-		gen3d.setZScale(1/24.0);
-		gen3d.setYScale(1/32.0);
-		gen3d.setWScale(1/32.0);
+		gen3d.setScale(1/64.0);
 		
 		for (int x=0; x< 16; x++) {
 			for (int z=0; z<16; z++) {
 				int realX = x + ChunkX * 16;
 				int realZ = z + ChunkZ * 16;
 
-				int height = getHeight(gens, realX, realZ);
+				int height = (int) (base.noise(realX, realZ, 0.5, 0.5)*64) + 64;
 				
-				for (int y=1; y < height && y < 256; y++) {
+				for (int y=1; y <= height && y < 256; y++) {
 					setBlock(x,y,z,chunk,Material.STONE);
-				}				
+				}
+				
+				int top = (int) (tops.noise(realX, realZ, 0.5, 0.5)*16) + height + 32;
+				
+				for (int y=height; y < top && y < 256; y++) {
+					double density = gen3d.noise(realX, y, realZ, 0.5, 0.5) + (1/(y-height+1));
+					if (density > 0.5) setBlock(x,y,z,chunk,Material.GRASS);
+				}
 			}
-		}
-		
+		}		
 		return chunk;
 	}
 	

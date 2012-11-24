@@ -1,24 +1,24 @@
-package me.jtjj222.Schematics;
+package me.jtjj222.SchematicsLoader;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class NBT_Tag_Float extends NBT_Tag{
+public class NBT_Tag_Byte extends NBT_Tag{
 	
-	public float payload;
+	public byte payload;
 
-	public NBT_Tag_Float(String name){
-		super(5, name);
+	public NBT_Tag_Byte(String name){
+		super(1,name);
 	}
-	public NBT_Tag_Float(String name, float payload){
+	public NBT_Tag_Byte(String name, byte payload){
 		super(8, name);
 		this.payload = payload;
 	}
 
 	@Override
 	public void readTagPayload(DataInput in) throws IOException {
-		this.payload = in.readFloat();		
+		this.payload = in.readByte();		
 	}
 
 	public void writeTag(DataOutput out) throws IOException {
@@ -28,7 +28,6 @@ public class NBT_Tag_Float extends NBT_Tag{
 	}
 	
 	public void writePayload(DataOutput out) throws IOException {
-		out.writeFloat(this.payload);
+		out.write(this.payload);
 	}
-	
 }
