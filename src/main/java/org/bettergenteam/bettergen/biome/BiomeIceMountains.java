@@ -5,21 +5,26 @@ import org.bettergenteam.bettergen.layer.GenLayer;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 
-public class BiomePlains extends BiomeBase {
+public class BiomeIceMountains extends BiomeBase {
     
-    public BiomePlains(int id) {
+    public BiomeIceMountains(int id) {
         super(id);
     }
-
+    
     public Biome getBukkitBiome() {
-        return Biome.PLAINS;
+        return Biome.ICE_MOUNTAINS;
     }
     
     public int getMaxY(World world, Random random, int realX, int realZ, GenLayer layer) {
-        int maxY = WATER_LEVEL + (int)Math.round(16*convertValue(BiomeBase.simplex[1].noise(realX, realZ, FREQ, AMP))) + 1;
-        double d = getDistanceFactorBiome(fluids, realX, realZ, 16, layer).getFactor();
+        int maxY = WATER_LEVEL + (int)Math.round(32*convertValue(BiomeBase.simplex[1].noise(realX, realZ, FREQ, AMP))) + 1;
+        DistanceLocationWrapper dw = getDistanceFactorBiome(belowHills, realX, realZ, 16, layer);
+        double d = dw.getFactor();
         if(d > 0) {
-            maxY -= (int) Math.round((maxY - WATER_LEVEL) * (1-d*d));
+            int rX2 = dw.getRealX();
+            int rZ2 = dw.getRealZ();
+            BiomeBase b = BiomeBase.byId[dw.getValue()];
+            int rMaxY = b.getMaxY(world, random, rX2, rZ2, layer);
+            maxY -= (int) Math.round((maxY - rMaxY) * (1-d*d));
         }
         return maxY;
     }
@@ -38,5 +43,5 @@ public class BiomePlains extends BiomeBase {
         }
         setBlock(x, maxY, z, chunk, 2);
     }
-    
+
 }

@@ -1,48 +1,59 @@
 package org.bettergenteam.bettergen.chunkgenerators;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
-import org.bukkit.Material;
+import java.util.Set;
+import org.bettergenteam.bettergen.biome.BiomeBase;
+import org.bettergenteam.bettergen.blockpopulators.BetterBlockPopulator;
+import org.bettergenteam.bettergen.layer.GenLayer;
+import org.bettergenteam.bettergen.noise.VoronoiNoiseGenerator;
 import org.bukkit.World;
-import org.bukkit.util.noise.PerlinOctaveGenerator;
+import org.bukkit.block.Biome;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 public class BetterGenOverworldChunkGenerator extends BetterGenChunkGenerator {
     
+    private static final Set<Biome> spawnBiomes = new HashSet<Biome>(){{add(Biome.BEACH);}};
+    private static final List<BetterBlockPopulator> blockPopulators = new ArrayList<BetterBlockPopulator>(){{/*add(new BetterTreePopulator());add(new BetterSnowPopulator());*/}};
+    
+    private final GenLayer layer;
+    
+    public BetterGenOverworldChunkGenerator(long seed) {
+        seed = Math.round(seed*1.125-418);
+        layer = GenLayer.initializeAllBiomeGenerators(seed, 3);
+        BiomeBase.simplex = new SimplexOctaveGenerator[] {new SimplexOctaveGenerator(seed, 8), new SimplexOctaveGenerator(seed+1, 8)};
+        BiomeBase.voronoi = new VoronoiNoiseGenerator[]{new VoronoiNoiseGenerator(seed, (short)0), new VoronoiNoiseGenerator(seed+1, (short)0), new VoronoiNoiseGenerator(seed+2, (short)0)};
+        BiomeBase.simplex[0].setScale(1.0/64.0);
+        BiomeBase.simplex[1].setScale(1.0/50.0);
+    }
+    
     public byte[][] generateBlockSections(World world, Random rand, int chunkX, int chunkZ, BiomeGrid biome) {
-        //where we will store our blocks
         byte[][] chunk = new byte[world.getMaxHeight() / 16][];
-        
-        PerlinOctaveGenerator base = new PerlinOctaveGenerator(world,10);
-        base.setScale(1/128.0);
-        
-        PerlinOctaveGenerator tops = new PerlinOctaveGenerator(world,2);
-        tops.setScale(1/32.0);
-        
-        SimplexOctaveGenerator gen3d = new SimplexOctaveGenerator(world,8);
-        gen3d.setScale(1/64.0);
-        
-        for (int x=0; x< 16; x++) {
-            for (int z=0; z<16; z++) {
-                int realX = x + chunkX * 16;
-                int realZ = z + chunkZ * 16;
-                
-                int height = (int) (base.noise(realX, realZ, 0.5, 0.5)*64) + 64;
-                
-                for (int y=1; y <= height && y < 256; y++) {
-                    setBlock(x,y,z,chunk,Material.STONE);
-                }
-                
-                int top = (int) (tops.noise(realX, realZ, 0.5, 0.5)*16) + height + 32;
-                
-                for (int y=height; y < top && y < 256; y++) {
-                    double density = gen3d.noise(realX, y, realZ, 0.5, 0.5) + (1/(y-height+1));
-                    if (density > 0.5) {
-                        setBlock(x,y,z,chunk,Material.GRASS);
-                    }
-                }
+        long seed = world.getSeed();
+        int cRX = chunkX*16;
+        int cRZ = chunkZ*16;
+        int[] values = layer.getValues(cRX, cRZ, 16, 16);
+        for (int z=0; z<16; z++) {
+            int realZ = cRZ+z;
+            int m = z*16;
+            for (int x=0; x< 16; x++) {
+                int realX = cRX+x;
+                BiomeBase biomeBase = BiomeBase.byId[values[x+m]];
+                biomeBase.generateColumn(world, rand, chunk, realX, realZ, x, z, layer);
+                biome.setBiome(x, z, biomeBase.getBukkitBiome());
             }
+        }
+        for(int i = 0; i <  blockPopulators.size() ;i++) {
+            blockPopulators.get(i).populateChunk(world, biome, seed + i, chunk, chunkX, chunkZ);
         }
         return chunk;
     }
-    
+
+    @Override
+    public boolean canSpawn(World world, int x, int z) {
+        return super.canSpawn(world, x, z) && (spawnBiomes.contains(world.getBiome(x, z)));
+    }
+
 }

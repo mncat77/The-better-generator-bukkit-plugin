@@ -5,16 +5,16 @@ import org.bettergenteam.bettergen.layer.GenLayer;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 
-public class BiomePlains extends BiomeBase {
+public class BiomeIcePlains extends BiomeBase {
     
-    public BiomePlains(int id) {
+    public BiomeIcePlains(int id) {
         super(id);
     }
 
     public Biome getBukkitBiome() {
-        return Biome.PLAINS;
+        return Biome.ICE_PLAINS;
     }
-    
+
     public int getMaxY(World world, Random random, int realX, int realZ, GenLayer layer) {
         int maxY = WATER_LEVEL + (int)Math.round(16*convertValue(BiomeBase.simplex[1].noise(realX, realZ, FREQ, AMP))) + 1;
         double d = getDistanceFactorBiome(fluids, realX, realZ, 16, layer).getFactor();

@@ -3,6 +3,8 @@ package org.bettergenteam.bettergen.bukkitplugin;
 import org.bettergenteam.bettergen.chunkgenerators.BetterGenEndChunkGenerator;
 import org.bettergenteam.bettergen.chunkgenerators.BetterGenNetherChunkGenerator;
 import org.bettergenteam.bettergen.chunkgenerators.BetterGenOverworldChunkGenerator;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,6 +22,10 @@ public class BetterGenPlugin extends JavaPlugin{
      */
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String genId) {
+        long seed = System.currentTimeMillis();
+        if(genId == null) {
+            return new BetterGenOverworldChunkGenerator(seed);
+        }
         if(genId.equalsIgnoreCase("Nether") || genId.equalsIgnoreCase("Underworld")) {
             return new BetterGenNetherChunkGenerator();
         }
@@ -27,7 +33,7 @@ public class BetterGenPlugin extends JavaPlugin{
             return new BetterGenEndChunkGenerator();
         }
         else {
-            return new BetterGenOverworldChunkGenerator();
+            return new BetterGenOverworldChunkGenerator(seed);
         }
     }
     

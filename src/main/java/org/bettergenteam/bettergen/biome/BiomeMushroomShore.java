@@ -5,18 +5,18 @@ import org.bettergenteam.bettergen.layer.GenLayer;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 
-public class BiomePlains extends BiomeBase {
+public class BiomeMushroomShore extends BiomeBase {
     
-    public BiomePlains(int id) {
+    public BiomeMushroomShore(int id) {
         super(id);
     }
 
     public Biome getBukkitBiome() {
-        return Biome.PLAINS;
+        return Biome.MUSHROOM_SHORE;
     }
-    
+
     public int getMaxY(World world, Random random, int realX, int realZ, GenLayer layer) {
-        int maxY = WATER_LEVEL + (int)Math.round(16*convertValue(BiomeBase.simplex[1].noise(realX, realZ, FREQ, AMP))) + 1;
+        int maxY = WATER_LEVEL + (int)Math.round(32*convertValue(BiomeBase.simplex[1].noise(realX, realZ, FREQ, AMP))) + 5;
         double d = getDistanceFactorBiome(fluids, realX, realZ, 16, layer).getFactor();
         if(d > 0) {
             maxY -= (int) Math.round((maxY - WATER_LEVEL) * (1-d*d));
@@ -36,7 +36,7 @@ public class BiomePlains extends BiomeBase {
         for(;y < maxY ; y++) {
             setBlock(x, y, z, chunk, 3);
         }
-        setBlock(x, maxY, z, chunk, 2);
+        setBlock(x, maxY, z, chunk, 110);
     }
     
 }

@@ -5,14 +5,14 @@ import org.bettergenteam.bettergen.layer.GenLayer;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 
-public class BiomePlains extends BiomeBase {
+public class BiomeDesert extends BiomeBase {
     
-    public BiomePlains(int id) {
+    public BiomeDesert(int id) {
         super(id);
     }
-
+    
     public Biome getBukkitBiome() {
-        return Biome.PLAINS;
+        return Biome.DESERT;
     }
     
     public int getMaxY(World world, Random random, int realX, int realZ, GenLayer layer) {
@@ -27,16 +27,19 @@ public class BiomePlains extends BiomeBase {
     public void generateColumn(World world, Random random, byte[][] chunk, int realX, int realZ, int x, int z, GenLayer layer) {
         int y = 0;
         int maxY = getMaxY(world, random, realX, realZ, layer);
+        int tY = maxY - random.nextInt(3) - 1;
         for(;y < random.nextInt(3)+1; y++) {
             setBlock(x, y, z, chunk, 7);
         }
-        for(;y < maxY - random.nextInt(3) - 1 ; y++) {
+        for(;y < tY - random.nextInt(3) - 1; y++) {
             setBlock(x, y, z, chunk, 1);
         }
-        for(;y < maxY ; y++) {
-            setBlock(x, y, z, chunk, 3);
+        for(;y < tY; y++) {
+            setBlock(x, y, z, chunk, 24);
         }
-        setBlock(x, maxY, z, chunk, 2);
+        for(;y <= maxY ; y++) {
+            setBlock(x, y, z, chunk, 12);
+        }
     }
     
 }

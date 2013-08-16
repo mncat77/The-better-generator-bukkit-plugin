@@ -1,7 +1,0 @@
-name: BetterGenerator
-description: A bukkit world generator that's better than the default one.
-version: 1.0
-main: org.BetterGenTeam.BetterGen.BukkitPlugin.BetterGenPlugin
-load: STARTUP
-author: jtjj222
-authors: [codename_b, sd5, Kodfod, NSArray, escortkeel]
