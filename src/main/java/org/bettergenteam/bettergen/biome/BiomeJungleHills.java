@@ -1,7 +1,7 @@
 package org.bettergenteam.bettergen.biome;
 
 import java.util.Random;
-import org.bettergenteam.bettergen.layer.GenLayer;
+import org.bettergenteam.bettergen.biome.layer.BiomeLayer;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 
@@ -15,7 +15,7 @@ public class BiomeJungleHills extends BiomeBase {
         return Biome.JUNGLE;
     }
     
-    public int getMaxY(World world, Random random, int realX, int realZ, GenLayer layer) {
+    public int getMaxY(World world, Random random, int realX, int realZ, BiomeLayer layer) {
         int maxY = WATER_LEVEL + (int)Math.round(32*convertValue(BiomeBase.simplex[1].noise(realX, realZ, FREQ, AMP))) + 1;
         DistanceLocationWrapper dw = getDistanceFactorBiome(belowHills, realX, realZ, 16, layer);
         double d = dw.getFactor();
@@ -29,7 +29,7 @@ public class BiomeJungleHills extends BiomeBase {
         return maxY;
     }
 
-    public void generateColumn(World world, Random random, byte[][] chunk, int realX, int realZ, int x, int z, GenLayer layer) {
+    public void generateColumn(World world, Random random, byte[][] chunk, int realX, int realZ, int x, int z, BiomeLayer layer) {
         int y = 0;
         int maxY = getMaxY(world, random, realX, realZ, layer);
         for(;y < random.nextInt(3)+1; y++) {

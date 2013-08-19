@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import org.bettergenteam.bettergen.biome.BiomeBase;
+import org.bettergenteam.bettergen.biome.layer.BiomeLayer;
 import org.bettergenteam.bettergen.blockpopulators.BetterBlockPopulator;
-import org.bettergenteam.bettergen.layer.GenLayer;
 import org.bettergenteam.bettergen.noise.VoronoiNoiseGenerator;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -18,11 +18,12 @@ public class BetterGenOverworldChunkGenerator extends BetterGenChunkGenerator {
     private static final Set<Biome> spawnBiomes = new HashSet<Biome>(){{add(Biome.BEACH);}};
     private static final List<BetterBlockPopulator> blockPopulators = new ArrayList<BetterBlockPopulator>(){{/*add(new BetterTreePopulator());add(new BetterSnowPopulator());*/}};
     
-    private final GenLayer layer;
+    private final BiomeLayer layer;
     
     public BetterGenOverworldChunkGenerator(long seed) {
         seed = Math.round(seed*1.125-418);
-        layer = GenLayer.initializeAllBiomeGenerators(seed, 3);
+        //layer = GenLayer.initializeAllBiomeGenerators(seed, 3);
+        layer = BiomeLayer.getBiomeProvidingLayer(seed, 3);
         BiomeBase.simplex = new SimplexOctaveGenerator[] {new SimplexOctaveGenerator(seed, 8), new SimplexOctaveGenerator(seed+1, 8)};
         BiomeBase.voronoi = new VoronoiNoiseGenerator[]{new VoronoiNoiseGenerator(seed, (short)0), new VoronoiNoiseGenerator(seed+1, (short)0), new VoronoiNoiseGenerator(seed+2, (short)0)};
         BiomeBase.simplex[0].setScale(1.0/64.0);
@@ -34,13 +35,13 @@ public class BetterGenOverworldChunkGenerator extends BetterGenChunkGenerator {
         long seed = world.getSeed();
         int cRX = chunkX*16;
         int cRZ = chunkZ*16;
-        int[] values = layer.getValues(cRX, cRZ, 16, 16);
-        for (int z=0; z<16; z++) {
-            int realZ = cRZ+z;
-            int m = z*16;
-            for (int x=0; x< 16; x++) {
-                int realX = cRX+x;
-                BiomeBase biomeBase = BiomeBase.byId[values[x+m]];
+        byte[] values = layer.getValues(cRX, cRZ, 16, 16);
+        for (int x=0; x< 16; x++) {
+            int realX = cRX+x;
+            int m = x*16;
+            for (int z=0; z<16; z++) {
+                int realZ = cRZ+z;
+                BiomeBase biomeBase = BiomeBase.byId[values[z+m]];
                 biomeBase.generateColumn(world, rand, chunk, realX, realZ, x, z, layer);
                 biome.setBiome(x, z, biomeBase.getBukkitBiome());
             }

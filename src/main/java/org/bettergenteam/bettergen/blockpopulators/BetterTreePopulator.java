@@ -87,7 +87,7 @@ public class BetterTreePopulator extends BetterBlockPopulator {
         }
     }
     
-        private static Random getLocationRandom(long seed, int realX, int realZ) {
+    private static Random getLocationRandom(long seed, int realX, int realZ) {
         seed *= seed * 6364136223846793005L + 1442695040888963407L;
         seed += realX;
         seed *= seed * 6364136223846793005L + 1442695040888963407L;

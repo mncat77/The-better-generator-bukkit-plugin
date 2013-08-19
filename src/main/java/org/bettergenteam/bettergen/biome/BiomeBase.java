@@ -3,7 +3,7 @@ package org.bettergenteam.bettergen.biome;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import org.bettergenteam.bettergen.layer.GenLayer;
+import org.bettergenteam.bettergen.biome.layer.BiomeLayer;
 import org.bettergenteam.bettergen.noise.VoronoiNoiseGenerator;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -81,12 +81,12 @@ public abstract class BiomeBase {
     
     public abstract Biome getBukkitBiome();
     
-    public abstract int getMaxY(World world, Random random, int realX, int realZ, GenLayer layer);
+    public abstract int getMaxY(World world, Random random, int realX, int realZ, BiomeLayer layer);
         //int rX2 = dw.getRealX();
         //int rZ2 = dw.getRealZ();
         //int rMaxY = BiomeBase.byId[dw.getValue()].getMaxY(world, random, rX2, rZ2, layer);
     
-    public abstract void generateColumn(World world, Random random, byte[][] chunk, int realX, int realZ, int x, int z, GenLayer layer);
+    public abstract void generateColumn(World world, Random random, byte[][] chunk, int realX, int realZ, int x, int z, BiomeLayer layer);
     
     public static void setBlock(int x, int y, int z, byte[][] chunk, org.bukkit.Material material) {
         if (chunk[y >> 4] == null) {
@@ -133,9 +133,9 @@ public abstract class BiomeBase {
     }
     
     
-    public static DistanceLocationWrapper getDistanceFactorBiome(int biomeId, int centerX, int centerZ, int range, GenLayer layer) {
+    public static DistanceLocationWrapper getDistanceFactorBiome(int biomeId, int centerX, int centerZ, int range, BiomeLayer layer) {
         int wl = 2*range+1;
-        int[] values = layer.getValues(centerX - range, centerZ - range, wl, wl);
+        byte[] values = layer.getValues(centerX - range, centerZ - range, wl, wl);
         int realX = 0;
         int realZ = 0;
         int v = -1;
@@ -162,18 +162,18 @@ public abstract class BiomeBase {
         return new DistanceLocationWrapper(f, d, realX, realZ, v);
     }
     
-    public static DistanceLocationWrapper getDistanceFactorBiome(Set<Integer> biomeIds, int centerX, int centerZ, int range, GenLayer layer) {
+    public static DistanceLocationWrapper getDistanceFactorBiome(Set<Integer> biomeIds, int centerX, int centerZ, int range, BiomeLayer layer) {
         int wl = 2*range+1;
-        int[] values = layer.getValues(centerX - range, centerZ - range, wl, wl);
+        byte[] values = layer.getValues(centerX - range, centerZ - range, wl, wl);
         double minDist = range*range+1;
         int realX = 0;
         int realZ = 0;
         int v = -1;
         double wlh = wl/2.0;
         for(int i = 0; i < values.length; i++) {
-            if(biomeIds.contains(values[i])) {
-                int x = i % wl;
-                int z = (i-x)/wl;
+            if(biomeIds.contains((int)values[i])) {
+                int z = i % wl;
+                int x = (i-z)/wl;
                 double xD = wlh - x;
                 double zD = wlh - z;
                 double newDist = xD*xD+zD*zD;

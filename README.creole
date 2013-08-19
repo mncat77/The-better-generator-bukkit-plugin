@@ -3,6 +3,16 @@ The better generator is a minecraft world generator that aims to be better then 
 It will generate more exiting worlds with its' own unique features. \\
 Less terrain bugs and more minecraft feeling!
 
+===Current TODO:
+* Cache the GenLayer results
+* Make Mountains fit in with the terrain
+* Make all the biomes fit together without gaps
+* Tweak frequency and amplitude values to make them look better
+* Think about a BlockPopulator system
+* Add more BlockPopulators
+
+Important: Don't mess with biome distribution before the first snapshot of 1.7 is released!
+
 ===Features:
 * More extreme mountains (with trees!)
 * Flatter plains for building
@@ -18,9 +28,10 @@ Less terrain bugs and more minecraft feeling!
 * NSArray
 * jtjj222
 * escortkeel
+* mncat77
 
 You want to take part? Apply at: \\
-[[http://forums.bukkit.org/threads/recruitment-for-bettergen-a-world-generator-that-bests-the-default.94471/|Recruitment for bettergen]]
+[[http://forums.bukkit.org/threads/wip-wgen-bettergen-the-world-generator-that-is-better-than-you.98291/|Recruitment for bettergen]]
 
 ----
 
