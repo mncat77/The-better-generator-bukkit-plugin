@@ -4,14 +4,13 @@ It will generate more exiting worlds with its' own unique features. \\
 Less terrain bugs and more minecraft feeling!
 
 ===Current TODO:
-* Cache the GenLayer results
+* Finish BiomeLayer classes
+* Cache the BiomeLayer results
 * Make Mountains fit in with the terrain
 * Make all the biomes fit together without gaps
 * Tweak frequency and amplitude values to make them look better
 * Think about a BlockPopulator system
 * Add more BlockPopulators
-
-Important: Don't mess with biome distribution before the first snapshot of 1.7 is released!
 
 ===Features:
 * More extreme mountains (with trees!)
